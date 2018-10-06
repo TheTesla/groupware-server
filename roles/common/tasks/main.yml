@@ -1,0 +1,189 @@
+---
+
+#https://pastebin.de/7225
+
+- name: Setup hosts and hostname
+  copy: 
+    src: "{{ item }}"
+    dest: "/etc/{{ item }}"
+    owner: root 
+    group: root
+  with_items:
+    - hosts
+    - hostname
+  become: True
+  become_method: sudo 
+
+- name: Reload hostname:
+  command: hostname -F /etc/hostname
+  become: True
+  become_method: sudo 
+
+- name: Deinstall sendmail
+  apt:
+    name: sendmail
+    state: absent
+  become: True
+  become_method: sudo 
+ 
+- name: Upgrade packages
+  apt:
+    upgrade: dist
+    update_cache: yes
+  become: True
+  become_method: sudo 
+ 
+- name: Install dependencies
+  apt:
+    name: "{{ item }}"
+    state: "latest"
+  with_items:
+    - postfix
+    - postfix-mysql
+    - postfix-doc
+    - mariadb-client
+    - mariadb-server
+    - getmail4
+    - rkhunter
+    - binutils
+    - dovecot-imapd
+    - dovecot-pop3d
+    - dovecot-mysql
+    - dovecot-sieve
+    - dovecot-lmtpd
+    - amavisd-new
+    - spamassassin
+    - clamav
+    - clamav-daemon
+    - clamav-docs
+    - daemon
+    - libio-string-perl
+    - libio-socket-ssl-perl
+    - libnet-ident-perl
+    - libnet-dns-perl
+    - mailman
+    - libapache2-mod-php
+    - libapache2-mod-php
+    - libapache2-mod-fcgid
+    - imagemagick
+    - libruby
+    - openssl
+    - easy-rsa
+    - openvpn
+    - aptitude
+    - libreoffice
+    - libnet-ldap-perl
+    - libconvert-asn1-perl
+    - bind9
+    - dnsutils
+    - haveged
+    - fail2ban
+    - ufw
+    - javascript-common
+    - libjs-jquery-mousewheel
+    - php-net-sieve
+    - tinymce
+    - libnet-rblclient-perl
+    - libparse-syslog-perl
+    - arj
+    - nomarch
+    - lzop
+    - cabextract
+    - apt-listchanges
+    - libnet-ldap-perl
+    - libauthen-sasl-perl
+  become: True
+  become_method: sudo 
+ 
+- name: Install apache2
+  apt: 
+    name: "{{ item }}"
+    state: "latest"
+  with_items:
+    - apache2
+    - apache2-doc
+    - apache2-utils
+    - apache2-suexec-pristine
+    - libapache2-mod-python
+  become: True
+  become_method: sudo 
+ 
+ 
+- name: Install php
+  apt: 
+    name: "{{ item }}"
+    state: "latest"
+  with_items:
+    - php7.2-curl
+    - php7.2-intl
+    - php7.2-pspell
+    - php7.2-recode
+    - php7.2-sqlite3
+    - php7.2-tidy
+    - php7.2-xmlrpc
+    - php7.2-xsl
+    - php7.2-opcache
+    - php-apcu
+    - php7.2-fpm
+    - php-mysql
+    - php7.2
+    - php7.2-common
+    - php7.2-gd
+    - php7.2-mysql
+    - php7.2-imap
+    - php7.2-cli
+    - php7.2-cgi
+    - memcached
+    - php-memcache
+    - php-imagick
+    - php-gettext
+    - php7.2-zip
+    - php7.2-mbstring
+    - php-pear
+    - mcrypt
+  become: True
+  become_method: sudo 
+ 
+- name: Install letsencrypt
+  apt: 
+    name: letsencrypt
+    state: latest
+  become: True
+  become_method: sudo 
+ 
+- name: Add certbot repo
+  apt_repository:
+    repo: ppa:certbot/certbot
+  become: True
+  become_method: sudo 
+ 
+- name: Install certbot
+  apt:
+    name: python-certbot-apache
+    update_cache: True
+    state: latest
+  become: True
+  become_method: sudo 
+ 
+- name: Install tools
+  apt:
+    name: "{{ item }}"
+    state: latest
+  update_cache: yes
+  with_items:
+    - ssh
+    - vim
+    - tmux
+    - screen
+    - mc
+    - unzip
+    - bzip2
+    - zip
+    - sudo
+    - ntp
+    - ntpdate
+  become: True
+  become_method: sudo 
+ 
+
+

@@ -1,0 +1,9 @@
+---
+
+- hosts: groupware-server
+  user: workshop
+  roles:
+    - common
+
+
+
